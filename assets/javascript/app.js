@@ -52,7 +52,8 @@ let showWrongGifs = [...wrongGifs];
 
 let startBtn = document.getElementById('start');
 let timer = document.getElementById('timer');
-let timeCounter = document.getElementById('time-counter');
+let firstNum = document.getElementById('first-num');
+let secondNum = document.getElementById('second-num');
 
 let questionsAnswers = document.getElementById('question-answer');
 let questions = document.getElementById('questions');
@@ -68,15 +69,25 @@ let timeCheck = false;
 let countTrue = 0;
 
 function counter() {
-    timeCounter.textContent = givenTime + " seconds";
+    firstNum.textContent = "3";
+    secondNum.textContent = givenTime % 10;
     countTime = setInterval(function(){
         givenTime--;
-        timeCounter.textContent = givenTime + " seconds";
         if(givenTime === 0) {
+            firstNum.textContent = "0";
+            secondNum.textContent = givenTime % 10;
             clearInterval(countTime);
             timeCheck = true;
-            
-            showResult()
+            showResult();
+        } else if(givenTime < 10) {
+            firstNum.textContent = "0";
+            secondNum.textContent = givenTime % 10;
+        } else if(givenTime < 20) {
+            firstNum.textContent = "1";
+            secondNum.textContent = givenTime % 10;
+        } else if(givenTime < 30) {
+            firstNum.textContent = "2";
+            secondNum.textContent = givenTime % 10;
         };
     },1000);
 };
@@ -91,9 +102,9 @@ function showQuestionAndPossibleAnswers() {
     let questionP = document.createElement('p');
     let ul = document.createElement('ul');
     currentQuestionSet = questionsSet[count];
-    questions.innerHTML = `<p>${currentQuestionSet.question}</p>`;
+    questions.innerHTML = `<p class="question">${currentQuestionSet.question}</p>`;
     questions.appendChild(questionP);
-    ul.classList = 'possible-answers gif';
+    ul.classList = 'possible-answers';
     for(let i = 0; i < questionsSet[count].possibleAnswers.length; i++){
         let li = document.createElement('p');
         li.className= 'answer';
@@ -142,11 +153,13 @@ function showResult() {
 
     if(checkAnswer) {
         countTrue++;
+        result.className = 'result';
         result.textContent = "Correct!!!";
         showGif(showCorrectGifs, correctGifs);
 
         var showNextQuestion = setInterval(function() {
                 givenTime = 30;
+                result.classList = '';
                 counter();
                 showQuestionAndPossibleAnswers();
                 clearInterval(showNextQuestion);
@@ -154,19 +167,23 @@ function showResult() {
             }, 5000);
 
     } else if(!checkAnswer) {
+        result.className = 'result';
         result.textContent = "The correct answer is " + currentQuestionSet.correctAnswer;
         showGif(showWrongGifs, wrongGifs);
         var showNextQuestion = setInterval(function() {
                 givenTime = 30;
+                result.classList = '';
                 counter();
                 showQuestionAndPossibleAnswers();
                 clearInterval(showNextQuestion);
             }, 5000);
     } else if(timeCheck){
+        result.className = 'result';
         result.innerHTML = `<p>Time Out!!</p>`;
         showGif(showWrongGifs, wrongGifs);
         var showNextQuestion = setInterval(function() {
             givenTime = 30;
+            result.classList = '';
             counter();
             showQuestionAndPossibleAnswers();
             clearInterval(showNextQuestion);
