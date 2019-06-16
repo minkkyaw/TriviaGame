@@ -165,6 +165,7 @@ function showResult() {
                 clearInterval(showNextQuestion);
                 
             }, 5000);
+        console.log(countTrue);
 
     } else if(!checkAnswer) {
         result.className = 'result';
