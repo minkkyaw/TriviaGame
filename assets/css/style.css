@@ -14,7 +14,7 @@ body {
 
 .container {
     width: 1000px;
-    min-height: 485px;
+    min-height: 490px;
     margin: 24.5vh auto;
     padding: 20px;
     text-align: center;
@@ -50,6 +50,29 @@ body {
     outline: none;
 }
 
+.reset-btn {
+    display: none;
+    font-size: 1rem;
+    font-family: inherit;
+    width: 300px;
+    padding: 10px;
+    border: none;
+    border-radius: 30px 0 30px;
+    box-shadow: 0 0 2px rgba(27, 37, 43, 0.6);
+}
+
+.reset-btn:hover {
+    color: #f4f4f4;
+    background-color: rgba(1, 38, 58, 0.6);
+    box-shadow: 0 0 5px 3px rgba(137, 153, 161, 0.6)
+}
+
+.reset-btn:focus {
+    border: none;
+    outline: none;
+}
+
+
 .timer {
     display: none;
     text-align: center;
@@ -71,7 +94,7 @@ body {
 }
 
 .question {
-    width: 700px;
+    width: 750px;
     font-size: 1.4rem;
     background-color: #f4f4f4;
     border: 1px solid rgba(146, 146, 146, 0.8);
@@ -102,8 +125,8 @@ body {
 }
 
 .result {
-    font-size: 1.3rem;
-    width: 700px;
+    font-size: 1.4rem;
+    width: 750px;
     background-color: #f4f4f4;
     border: 1px solid rgba(146, 146, 146, 0.8);
     border-radius: 10px;
@@ -135,6 +158,13 @@ body {
     }
     
     .btn {
+        font-size: .7rem;
+        width: 200px;
+        padding: 5px;
+        border: none;
+        border-radius: 15px 0 15px;
+    }
+    .reset-btn {
         font-size: .7rem;
         width: 200px;
         padding: 5px;
@@ -190,6 +220,14 @@ body {
     }
     
     .btn {
+        font-size: .5rem;
+        width: 100px;
+        padding: 3px;
+        border: none;
+        border-radius: 10px 0 10px;
+    }
+
+    .reset-btn {
         font-size: .5rem;
         width: 100px;
         padding: 3px;

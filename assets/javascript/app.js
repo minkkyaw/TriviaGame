@@ -30,7 +30,7 @@ let questionsSet = [
         correctAnswer: 'Team liquid'
     },
     {
-        question: 'Which team leader is Kuroky',
+        question: 'Which team leader is Kuroky?',
         possibleAnswers: ["Team Liquid", "Natus Vincere", "Alliance", "Wings Gaming"],
         correctAnswer: 'Team Liquid'
     },
@@ -42,7 +42,8 @@ let questionsSet = [
 ];
 
 let count = 0;
-var countTimel;
+let countTrue = 0;
+var countTime;
 
 let correctGifs = ["https://media.giphy.com/media/q5J2HfnH8mCvS/giphy.gif", "https://media.giphy.com/media/Qxz40buD1w6UE/giphy.gif", "https://media.giphy.com/media/4Yn70mra350is/giphy.gif"];
 let wrongGifs = ["https://media.giphy.com/media/zG6MKhlBxIloc/giphy.gif", "https://media.giphy.com/media/etwLaqxWP5z2tSQ5Cw/giphy.gif", "https://media.giphy.com/media/5eG28RENYdnMrrHuwq/giphy.gif"];
@@ -62,11 +63,14 @@ let answers = document.getElementById('answers');
 let result = document.getElementById('result');
 let animatedGif = document.getElementById('animated-gif');
 
+let resetBtn = document.getElementById('reset');
+
 let currentQuestionSet;
 let givenTime = 30;
 let checkAnswer;
 let timeCheck = false;
-let countTrue = 0;
+let delayTime = 3000;
+
 
 function counter() {
     firstNum.textContent = "3";
@@ -96,12 +100,15 @@ function showQuestionAndPossibleAnswers() {
     while (result.firstChild) {
         result.removeChild(result.firstChild);
     };
+
     while (animatedGif.firstChild) {
         animatedGif.removeChild(animatedGif.firstChild);
     };
+
     let questionP = document.createElement('p');
     let ul = document.createElement('ul');
     currentQuestionSet = questionsSet[count];
+    console.log(count);
     questions.innerHTML = `<p class="question">${currentQuestionSet.question}</p>`;
     questions.appendChild(questionP);
     ul.classList = 'possible-answers';
@@ -113,7 +120,6 @@ function showQuestionAndPossibleAnswers() {
     };
     answers.appendChild(ul);
     count++;
-    
 };
 
 function checkingAnswer() {
@@ -132,9 +138,7 @@ function checkingAnswer() {
 function showGif(gifs, gifsSource) {
     if(gifs.length === 0) {
         gifs = Array.from(gifsSource);
-        console.log(gifs.length);
     }
-    
     let img = document.createElement('img');
     let random = Math.floor(Math.random() * gifs.length);
     img.className = 'gif';
@@ -142,6 +146,21 @@ function showGif(gifs, gifsSource) {
     animatedGif.append(img);
     gifs.splice(random, 1);
 };
+
+function finalResult(interval) {
+    if(count === 8) {
+        clearInterval(countTime);
+        count = 0;
+        resetBtn.style.display = "block";
+        clearInterval(interval);
+    } else {
+        givenTime = 30;
+        result.classList = '';
+        counter();
+        showQuestionAndPossibleAnswers();
+        clearInterval(interval);
+    } 
+}
 
 function showResult() {
     while (answers.firstChild) {
@@ -156,47 +175,28 @@ function showResult() {
         result.className = 'result';
         result.textContent = "Correct!!!";
         showGif(showCorrectGifs, correctGifs);
-
         var showNextQuestion = setInterval(function() {
-                givenTime = 30;
-                result.classList = '';
-                counter();
-                showQuestionAndPossibleAnswers();
-                clearInterval(showNextQuestion);
-                
-            }, 5000);
-        console.log(countTrue);
-
+            clearInterval(countTime);
+            finalResult(showNextQuestion);
+        }, delayTime);
     } else if(!checkAnswer) {
         result.className = 'result';
         result.textContent = "The correct answer is " + currentQuestionSet.correctAnswer;
         showGif(showWrongGifs, wrongGifs);
         var showNextQuestion = setInterval(function() {
-                givenTime = 30;
-                result.classList = '';
-                counter();
-                showQuestionAndPossibleAnswers();
-                clearInterval(showNextQuestion);
-            }, 5000);
+            clearInterval(countTime);
+            finalResult(showNextQuestion)
+        }, delayTime);
     } else if(timeCheck){
         result.className = 'result';
         result.innerHTML = `<p>Time Out!!</p>`;
         showGif(showWrongGifs, wrongGifs);
         var showNextQuestion = setInterval(function() {
-            givenTime = 30;
-            result.classList = '';
-            counter();
-            showQuestionAndPossibleAnswers();
-            clearInterval(showNextQuestion);
-        }, 5000);
+            clearInterval(countTime);
+            finalResult(showNextQuestion)
+        }, delayTime);
     };
 };
-
-
-
-
-
-
 
 function showQuestions(e) {
     e.preventDefault();
@@ -207,8 +207,23 @@ function showQuestions(e) {
     checkingAnswer();
 };
 
-startBtn.addEventListener('click',showQuestions);
+function resetData(e) {
+    e.preventDefault();
+    count = 0;
+    countTrue = 0;
+    countTime;
+    currentQuestionSet;
+    givenTime = 30;
+    checkAnswer;
+    timeCheck = false;
+    resetBtn.style.display = "none";
+    result.classList = '';
+    timer.style.display = "inline-block";
+    counter();
+    showQuestionAndPossibleAnswers();
+};
 
-
+startBtn.addEventListener('click', showQuestions);
+resetBtn.addEventListener('click', resetData);
 
 
