@@ -108,16 +108,16 @@ function showQuestionAndPossibleAnswers() {
     let questionP = document.createElement('p');
     let ul = document.createElement('ul');
     currentQuestionSet = questionsSet[count];
-    console.log(count);
     questions.innerHTML = `<p class="question">${currentQuestionSet.question}</p>`;
     questions.appendChild(questionP);
-    ul.classList = 'possible-answers';
+
     for(let i = 0; i < questionsSet[count].possibleAnswers.length; i++){
         let li = document.createElement('p');
         li.className= 'answer';
         li.textContent = questionsSet[count].possibleAnswers[i];
         ul.appendChild(li);
     };
+
     answers.appendChild(ul);
     count++;
 };
@@ -149,7 +149,6 @@ function showGif(gifs, gifsSource) {
 
 function finalResult(interval) {
     if(count === 8) {
-        clearInterval(countTime);
         count = 0;
         resetBtn.style.display = "block";
         clearInterval(interval);
@@ -211,7 +210,6 @@ function resetData(e) {
     e.preventDefault();
     count = 0;
     countTrue = 0;
-    countTime;
     currentQuestionSet;
     givenTime = 30;
     checkAnswer;
