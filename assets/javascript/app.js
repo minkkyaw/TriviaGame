@@ -71,7 +71,7 @@ let currentQuestionSet;
 let givenTime = 20;
 let checkAnswer;
 let timeCheck = false;
-let delayTime = 1000;
+let delayTime = 3000;
 let clearWarning;
 let wrongQues = [];
 let wrongAns = [];
