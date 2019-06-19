@@ -74,7 +74,6 @@ let timeCheck = false;
 let delayTime = 3000;
 let clearWarning;
 let wrongQues = [];
-let wrongAns = [];
 
 
 function counter() {
@@ -133,7 +132,6 @@ function checkingAnswer() {
         if(e.target.textContent === currentQuestionSet.correctAnswer) {
             checkAnswer = true;
         } else {
-            wrongQues.push(currentQuestionSet);
             checkAnswer = false;
         }
         clearInterval(countTime);
@@ -143,11 +141,9 @@ function checkingAnswer() {
 
 function showGif(gifs, gifsSource) {
     if(gifs.length === 0) {
-        gifs = Array.from(gifsSource);
-        gifs.length = gifs.length;
-    } else {
-        console.log(gifs.length);
+        gifs = [...gifsSource];
     }
+        console.log(gifs.length);
     let img = document.createElement('img');
     let random = Math.floor(Math.random() * gifs.length);
     img.className = 'gif';
@@ -214,17 +210,24 @@ function showResult() {
     };
 
     if(timeCheck) {
+        wrongQues.push(currentQuestionSet);
+        console.log(wrongQues);
         timeCheck = false;
         result.className = 'result';
         result.textContent = "Time Out!!The correct answer is " + currentQuestionSet.correctAnswer + ".";
         showGif(showWrongGifs, wrongGifs);
         nextQuestion();
     } else if(!checkAnswer) {
+        checkAnswer='';
+        wrongQues.push(currentQuestionSet);
+        console.log(wrongQues);
         result.className = 'result';
         result.textContent = "The correct answer is " + currentQuestionSet.correctAnswer;
         showGif(showWrongGifs, wrongGifs);
         nextQuestion();
     } else if(checkAnswer){
+        console.log(wrongQues);
+        checkAnswer='';
         countTrue++;
         result.className = 'result';
         result.textContent = "Correct!!!";
