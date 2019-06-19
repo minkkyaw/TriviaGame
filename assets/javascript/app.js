@@ -162,19 +162,26 @@ function finalResult(interval) {
                 animatedGif.removeChild(animatedGif.firstChild);
             };
             result.className = 'result';
-            result.innerHTML = `<p>Number of correct answers : ${countTrue}</p><p>Number of wrong answers : ${count-countTrue}<\p>`;    
-            for(let i = 0; i < wrongQues.length; i++) {
-                let newDiv = document.createElement('div');
+            result.innerHTML = `<p>Number of correct answers : ${countTrue}</p><p>Number of wrong answers : ${count-countTrue}<\p>`;  
+            if(wrongQues.length === 0) {
                 let quesP = document.createElement('div');
-                let ansP = document.createElement('div');
-                if( i === 0) {
-                    quesP.innerHTML = `<p style="text-decoration: underline">Question<p><p>${wrongQues[i].question}</p>`;
-                } else {
-                    quesP.innerHTML = `<hr><p style="text-decoration: underline">Question<p><p>${wrongQues[i].question}</p>`;
-                };
-                ansP.innerHTML = `<p style="text-decoration: underline">Answer<p><p>${wrongQues[i].correctAnswer}</p>`;
-                newDiv.appendChild(quesP).appendChild(ansP);
-                incorrectAnswers.appendChild(newDiv);
+                quesP.innerHTML = `<p>"You answered all questions correctly!!!"</p>`;
+                incorrectAnswers.appendChild(quesP);
+            } else {
+                for(let i = 0; i < wrongQues.length; i++) {
+                    let newDiv = document.createElement('div');
+                    let quesP = document.createElement('div');
+                    let ansP = document.createElement('div');
+                    if( i === 0) {
+                        quesP.innerHTML = `<p style="text-decoration: underline">Question<p><p>${wrongQues[i].question}</p>`;
+                    } else {
+                        quesP.innerHTML = `<hr><p style="text-decoration: underline">Question<p><p>${wrongQues[i].question}</p>`;
+                    };
+                    ansP.innerHTML = `<p style="text-decoration: underline">Answer<p><p>${wrongQues[i].correctAnswer}</p>`;
+                    newDiv.appendChild(quesP).appendChild(ansP);
+                    incorrectAnswers.appendChild(newDiv);
+                }
+            
             };
             incorrectAnswers.className = "incorrect-answers";
             resetBtn.style.display = "block";
@@ -218,7 +225,7 @@ function showResult() {
         countTrue++;
         result.className = 'result';
         result.textContent = "Correct!!!";
-        showGif(showWrongGifs, wrongGifs);
+        showGif(showCorrectGifs, correctGifs);
         nextQuestion();
     };
 };

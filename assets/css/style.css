@@ -271,12 +271,12 @@ hr {
         border-radius: 10px 0 10px;
     }
 
-    .reset-btn {
-        font-size: .5rem;
-        width: 100px;
-        padding: 3px;
-        border: none;
-        border-radius: 10px 0 10px;
+    .btn:hover {
+        background-color: #f4f4f4;
+    }
+
+    .reset-btn:hover {
+        background-color: #f4f4f4;
     }
     
     .timer {
