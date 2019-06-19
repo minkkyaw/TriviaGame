@@ -144,6 +144,8 @@ function checkingAnswer() {
 function showGif(gifs, gifsSource) {
     if(gifs.length === 0) {
         gifs = Array.from(gifsSource);
+    } else {
+        console.log(gifs.length);
     }
     let img = document.createElement('img');
     let random = Math.floor(Math.random() * gifs.length);
@@ -214,7 +216,7 @@ function showResult() {
         timeCheck = false;
         result.className = 'result';
         result.textContent = "Time Out!!The correct answer is " + currentQuestionSet.correctAnswer + ".";
-        showGif(showCorrectGifs, correctGifs);
+        showGif(showWrongGifs, wrongGifs);
         nextQuestion();
     } else if(!checkAnswer) {
         result.className = 'result';
