@@ -257,4 +257,3 @@ function resetData(e) {
 startBtn.addEventListener('click', showQuestions);
 resetBtn.addEventListener('click', resetData);
 
-
