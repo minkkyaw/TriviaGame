@@ -144,6 +144,7 @@ function checkingAnswer() {
 function showGif(gifs, gifsSource) {
     if(gifs.length === 0) {
         gifs = Array.from(gifsSource);
+        gifs.length = gifs.length;
     } else {
         console.log(gifs.length);
     }
@@ -164,7 +165,7 @@ function finalResult(interval) {
                 animatedGif.removeChild(animatedGif.firstChild);
             };
             result.className = 'result';
-            result.innerHTML = `<p>Number of correct answers : ${countTrue}</p><p>Number of wrong answers : ${count-countTrue}<\p>`;  
+            result.innerHTML = `<p>Number of correct answers : ${countTrue}</p><p>Number of incorrect answers : ${count-countTrue}<\p>`;  
             if(wrongQues.length === 0) {
                 let quesP = document.createElement('div');
                 quesP.innerHTML = `<p>"You answered all questions correctly!!!"</p>`;
