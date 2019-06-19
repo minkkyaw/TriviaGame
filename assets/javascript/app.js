@@ -247,6 +247,7 @@ function showQuestions(e) {
 
 function resetData(e) {
     e.preventDefault();
+    wrongQues = [];
     countTrue = 0;
     currentQuestionSet;
     checkAnswer;
