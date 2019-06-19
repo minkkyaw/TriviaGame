@@ -15,13 +15,18 @@ body {
 .container {
     width: 1000px;
     min-height: 490px;
-    margin: 24.5vh auto;
+    margin: calc(100vh / 2 - 490px / 2) auto;
     padding: 20px;
     text-align: center;
     background-color: rgba(87, 170, 214, 0.6);
     border-radius: 10px;
-    box-shadow: 0 0 2px rgba(137, 153, 161, 0.6)
+    box-shadow: 0 0 2px rgba(137, 153, 161, 0.6);
+}
 
+hr {
+    border: none;
+    border-bottom: 1px solid rgba(61, 62, 63, 0.9);
+    box-shadow: 0 0 2px rgba(137, 153, 161, 0.6);
 }
 
 .header {
@@ -51,6 +56,7 @@ body {
 }
 
 .reset-btn {
+    margin: 0 auto;
     display: none;
     font-size: 1rem;
     font-family: inherit;
@@ -89,6 +95,18 @@ body {
     width: 10px;
 }
 
+.incorrect-answers {
+    height: 100px;
+    font-size: 1rem;
+    width: 750px;
+    background-color: #f4f4f4;
+    border: 1px solid rgba(146, 146, 146, 0.8);
+    border-radius: 10px;
+    padding: 10px;
+    margin: 0 auto 20px;
+    overflow: scroll;
+}
+
 .gif {
     height: 200px;
 }
@@ -100,14 +118,20 @@ body {
     border: 1px solid rgba(146, 146, 146, 0.8);
     border-radius: 10px;
     padding: 10px;
+    margin: 0 auto 10px;
+}
+
+.fit-content {
+    width: fit-content;
     margin: 0 auto;
+    display: grid;
+    grid-row-gap: 7px;
 }
 
 .answer {
     background-color: rgba(180, 250, 247, 0.6);
     width: 300px;
     padding: 5px;
-    margin: 5px auto;
     border: 1px solid rgb(157,158,158);
     border-radius: 10px;
 }
@@ -133,7 +157,7 @@ body {
     padding: 10px;
     margin: 0 auto 10px;
     animation-name: result;
-    animation-duration: 2.5s;
+    animation-duration: 1.5s;
     animation-iteration-count: 2;
 }
 
@@ -143,11 +167,24 @@ body {
     }
 }
 
+.warning {
+    animation-name: warning;
+    animation-duration: 1s;
+    animation-iteration-count: 5;
+}
+
+@keyframes warning {
+    0% {
+        color: white;
+        background: linear-gradient(45deg, rgba(247, 65, 65, 1),rgba(231, 41, 41, 1));
+    }
+}
+
 @media screen and (max-width: 1000px) {
     .container {
         font-size: .7rem;
         min-height: 355px;
-        margin: 32.5vh auto;
+        margin: calc(100vh / 2 - 355px / 2) auto;
         width: 90vw;
         padding: 15px;
     }
@@ -182,6 +219,13 @@ body {
         display: inline-block;
         width: 7px;
     }
+
+    .incorrect-answers {
+        height: 70px;
+        font-size: .7rem;
+        width: 500px;
+        padding: 7px;
+    }
     
     .gif {
         height: 150px;
@@ -209,7 +253,7 @@ body {
         font-size: .5rem;
         min-height: 305px;
         width: 100vw;
-        margin: 24vh auto;
+        margin: calc(100vh / 2 - 305px / 2) auto;
         border-radius: 0;
         padding: 15px 0;
     }
@@ -244,6 +288,13 @@ body {
     .width-10 {
         display: inline-block;
         width: 5px;
+    }
+
+    .incorrect-answers {
+        height: 70px;
+        font-size: .5rem;
+        width: 95vw;
+        padding: 5px;
     }
     
     .gif {

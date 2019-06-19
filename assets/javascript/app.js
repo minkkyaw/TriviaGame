@@ -59,21 +59,26 @@ let secondNum = document.getElementById('second-num');
 let questionsAnswers = document.getElementById('question-answer');
 let questions = document.getElementById('questions');
 let answers = document.getElementById('answers');
+let answerList = document.getElementById('answer-list');
 
 let result = document.getElementById('result');
+let incorrectAnswers = document.getElementById('incorrect-answers');
 let animatedGif = document.getElementById('animated-gif');
 
 let resetBtn = document.getElementById('reset');
 
 let currentQuestionSet;
-let givenTime = 30;
+let givenTime = 20;
 let checkAnswer;
 let timeCheck = false;
-let delayTime = 3000;
+let delayTime = 1000;
+let clearWarning;
+let wrongQues = [];
+let wrongAns = [];
 
 
 function counter() {
-    firstNum.textContent = "3";
+    firstNum.textContent = "2";
     secondNum.textContent = givenTime % 10;
     countTime = setInterval(function(){
         givenTime--;
@@ -86,13 +91,16 @@ function counter() {
         } else if(givenTime < 10) {
             firstNum.textContent = "0";
             secondNum.textContent = givenTime % 10;
+            if(givenTime === 5) {
+                timer.classList = 'timer warning';
+                setTimeout(function() {
+                    timer.classList = 'timer';
+                },5000);
+            }
         } else if(givenTime < 20) {
             firstNum.textContent = "1";
             secondNum.textContent = givenTime % 10;
-        } else if(givenTime < 30) {
-            firstNum.textContent = "2";
-            secondNum.textContent = givenTime % 10;
-        };
+        }
     },1000);
 };
 
@@ -106,7 +114,6 @@ function showQuestionAndPossibleAnswers() {
     };
 
     let questionP = document.createElement('p');
-    let ul = document.createElement('ul');
     currentQuestionSet = questionsSet[count];
     questions.innerHTML = `<p class="question">${currentQuestionSet.question}</p>`;
     questions.appendChild(questionP);
@@ -115,19 +122,18 @@ function showQuestionAndPossibleAnswers() {
         let li = document.createElement('p');
         li.className= 'answer';
         li.textContent = questionsSet[count].possibleAnswers[i];
-        ul.appendChild(li);
+        answerList.appendChild(li);
     };
-
-    answers.appendChild(ul);
     count++;
 };
 
 function checkingAnswer() {
-    answers.addEventListener('click', function(e) {
+    answerList.addEventListener('click', function(e) {
         e.preventDefault();
         if(e.target.textContent === currentQuestionSet.correctAnswer) {
             checkAnswer = true;
         } else {
+            wrongQues.push(currentQuestionSet);
             checkAnswer = false;
         }
         clearInterval(countTime);
@@ -149,51 +155,71 @@ function showGif(gifs, gifsSource) {
 
 function finalResult(interval) {
     if(count === 8) {
-        count = 0;
-        resetBtn.style.display = "block";
-        clearInterval(interval);
+        givenTime = 20;
+        setTimeout(function() {
+            clearInterval(countTime);
+            while (animatedGif.firstChild) {
+                animatedGif.removeChild(animatedGif.firstChild);
+            };
+            result.className = 'result';
+            result.innerHTML = `<p>Number of correct answers : ${countTrue}</p><p>Number of wrong answers : ${count-countTrue}<\p>`;    
+            for(let i = 0; i < wrongQues.length; i++) {
+                let newDiv = document.createElement('div');
+                let quesP = document.createElement('div');
+                let ansP = document.createElement('div');
+                if( i === 0) {
+                    quesP.innerHTML = `<p style="text-decoration: underline">Question<p><p>${wrongQues[i].question}</p>`;
+                } else {
+                    quesP.innerHTML = `<hr><p style="text-decoration: underline">Question<p><p>${wrongQues[i].question}</p>`;
+                };
+                ansP.innerHTML = `<p style="text-decoration: underline">Answer<p><p>${wrongQues[i].correctAnswer}</p>`;
+                newDiv.appendChild(quesP).appendChild(ansP);
+                incorrectAnswers.appendChild(newDiv);
+            };
+            incorrectAnswers.className = "incorrect-answers";
+            resetBtn.style.display = "block";
+            count = 0;
+        }, delayTime);
     } else {
-        givenTime = 30;
+        givenTime = 20;
         result.classList = '';
         counter();
         showQuestionAndPossibleAnswers();
-        clearInterval(interval);
-    } 
+    };
+};
+
+function nextQuestion() {
+    var showNextQuestion = setTimeout(function() {
+        clearInterval(countTime);
+        finalResult(showNextQuestion);
+    }, delayTime);
 }
 
 function showResult() {
-    while (answers.firstChild) {
-        answers.removeChild(answers.firstChild);
+    while (answerList.firstChild) {
+        answerList.removeChild(answerList.firstChild);
     };
     while (questions.firstChild) {
         questions.removeChild(questions.firstChild);
     };
 
-    if(checkAnswer) {
-        countTrue++;
+    if(timeCheck) {
+        timeCheck = false;
         result.className = 'result';
-        result.textContent = "Correct!!!";
+        result.textContent = "Time Out!!The correct answer is " + currentQuestionSet.correctAnswer + ".";
         showGif(showCorrectGifs, correctGifs);
-        var showNextQuestion = setInterval(function() {
-            clearInterval(countTime);
-            finalResult(showNextQuestion);
-        }, delayTime);
+        nextQuestion();
     } else if(!checkAnswer) {
         result.className = 'result';
         result.textContent = "The correct answer is " + currentQuestionSet.correctAnswer;
         showGif(showWrongGifs, wrongGifs);
-        var showNextQuestion = setInterval(function() {
-            clearInterval(countTime);
-            finalResult(showNextQuestion)
-        }, delayTime);
-    } else if(timeCheck){
+        nextQuestion();
+    } else if(checkAnswer){
+        countTrue++;
         result.className = 'result';
-        result.innerHTML = `<p>Time Out!!</p>`;
+        result.textContent = "Correct!!!";
         showGif(showWrongGifs, wrongGifs);
-        var showNextQuestion = setInterval(function() {
-            clearInterval(countTime);
-            finalResult(showNextQuestion)
-        }, delayTime);
+        nextQuestion();
     };
 };
 
@@ -208,15 +234,15 @@ function showQuestions(e) {
 
 function resetData(e) {
     e.preventDefault();
-    count = 0;
     countTrue = 0;
     currentQuestionSet;
-    givenTime = 30;
     checkAnswer;
     timeCheck = false;
     resetBtn.style.display = "none";
     result.classList = '';
     timer.style.display = "inline-block";
+    incorrectAnswers.innerHTML = "";
+    incorrectAnswers.classList.remove("incorrect-answers");
     counter();
     showQuestionAndPossibleAnswers();
 };
